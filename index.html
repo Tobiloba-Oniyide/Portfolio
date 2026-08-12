@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tobiloba Oniyide ✦ Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Mono:wght@300;400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0608;
+      --surface: #110b0e;
+      --card: #180d12;
+      --border: rgba(255,90,150,0.12);
+      --pink: #ff2d78;
+      --pink-soft: #ff6ea8;
+      --pink-pale: #ffb3ce;
+      --pink-glow: rgba(255,45,120,0.18);
+      --white: #fff0f5;
+      --muted: #a07090;
+      --font-display: 'Playfair Display', serif;
+      --font-mono: 'DM Mono', monospace;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ─── CUSTOM CURSOR ─── */
+    .cursor {
+      width: 12px; height: 12px;
+      background: var(--pink);
+      border-radius: 50%;
+      position: fixed; pointer-events: none; z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.15s ease, width 0.2s, height 0.2s, background 0.2s;
+      mix-blend-mode: screen;
+    }
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border: 1.5px solid var(--pink-soft);
+      border-radius: 50%;
+      position: fixed; pointer-events: none; z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: all 0.35s ease;
+      opacity: 0.5;
+    }
+
+    /* ─── NOISE OVERLAY ─── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9000; opacity: 0.35;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 6%;
+      background: rgba(10,6,8,0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.15rem; font-weight: 700;
+      color: var(--pink);
+      letter-spacing: 0.01em;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none;
+      font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+      font-family: var(--font-mono);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--pink); }
+    .nav-cta {
+      padding: 0.45rem 1.2rem;
+      border: 1px solid var(--pink);
+      color: var(--pink) !important;
+      border-radius: 50px;
+    }
+    .nav-cta:hover { background: var(--pink); color: var(--black) !important; }
+
+    /* ─── HERO ─── */
+    #hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 0 6%; padding-top: 5rem;
+      position: relative; overflow: hidden;
+    }
+
+    .blob {
+      position: absolute; border-radius: 50%;
+      filter: blur(90px); pointer-events: none; opacity: 0.25;
+    }
+    .blob-1 { width: 500px; height: 500px; background: var(--pink); top: -100px; right: -100px; animation: drift 14s ease-in-out infinite alternate; }
+    .blob-2 { width: 350px; height: 350px; background: #9b0050; bottom: -80px; left: -80px; animation: drift 18s ease-in-out infinite alternate-reverse; }
+    .blob-3 { width: 220px; height: 220px; background: var(--pink-soft); top: 60%; left: 40%; animation: drift 10s ease-in-out infinite alternate; }
+    @keyframes drift { from { transform: translate(0,0) scale(1); } to { transform: translate(30px, 20px) scale(1.07); } }
+
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,45,120,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,45,120,0.05) 1px, transparent 1px);
+      background-size: 55px 55px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 30%, transparent 100%);
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-mono); font-size: 0.78rem;
+      color: var(--pink); letter-spacing: 0.2em; text-transform: uppercase;
+      margin-bottom: 1.4rem; opacity: 0; animation: up 0.7s 0.1s forwards;
+    }
+    .hero-eyebrow span { opacity: 0.5; margin: 0 0.6rem; }
+
+    .hero-h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      font-weight: 900; line-height: 1.05;
+      max-width: 860px;
+      opacity: 0; animation: up 0.7s 0.25s forwards;
+    }
+    .hero-h1 .stroke { -webkit-text-stroke: 2px var(--pink); color: transparent; }
+    .hero-h1 .pink { color: var(--pink); }
+
+    .hero-desc {
+      margin-top: 1.8rem; max-width: 520px;
+      color: var(--muted); font-size: 1rem;
+      opacity: 0; animation: up 0.7s 0.4s forwards;
+    }
+
+    .hero-actions {
+      display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2.5rem;
+      opacity: 0; animation: up 0.7s 0.55s forwards;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.85rem 2rem; border-radius: 50px;
+      font-family: var(--font-mono); font-size: 0.85rem; font-weight: 500;
+      cursor: none; transition: all 0.25s; text-decoration: none;
+      letter-spacing: 0.05em;
+    }
+    .btn-pink { background: var(--pink); color: var(--black); font-weight: 600; }
+    .btn-pink:hover { background: var(--pink-soft); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(255,45,120,0.4); }
+    .btn-ghost { border: 1.5px solid rgba(255,45,120,0.35); color: var(--pink-pale); background: transparent; }
+    .btn-ghost:hover { border-color: var(--pink); color: var(--pink); transform: translateY(-3px); }
+
+    .hero-tags {
+      display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 3rem;
+      opacity: 0; animation: up 0.7s 0.7s forwards;
+    }
+    .tag {
+      font-family: var(--font-mono); font-size: 0.75rem;
+      padding: 0.3rem 0.9rem; border-radius: 50px;
+      border: 1px solid var(--border); color: var(--muted);
+      background: rgba(255,45,120,0.04);
+    }
+
+    .scroll-cue {
+      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.15em;
+      color: var(--muted); text-transform: uppercase;
+      animation: up 0.7s 1s forwards; opacity: 0;
+    }
+    .scroll-line { width: 1px; height: 48px; background: linear-gradient(to bottom, var(--pink), transparent); animation: scrollBlink 2s infinite; }
+    @keyframes scrollBlink { 0%,100%{opacity:1} 50%{opacity:0.25} }
+    @keyframes up { from { opacity: 0; transform: translateY(32px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ─── SHARED SECTION ─── */
+    section { padding: 6rem 6%; }
+    .sec-label {
+      font-family: var(--font-mono); font-size: 0.72rem;
+      color: var(--pink); letter-spacing: 0.2em; text-transform: uppercase;
+      margin-bottom: 0.8rem;
+    }
+    .sec-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.9rem, 3.5vw, 3rem);
+      font-weight: 700; line-height: 1.15; margin-bottom: 1rem;
+    }
+    .sec-sub { color: var(--muted); max-width: 520px; }
+
+    /* ─── ABOUT ─── */
+    #about { background: var(--surface); }
+    .about-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 4rem; align-items: center; margin-top: 3rem; }
+    .about-story p { color: var(--muted); margin-bottom: 1.2rem; line-height: 1.8; }
+    .about-story p strong { color: var(--white); }
+    .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .stat-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 1.6rem; transition: all 0.25s;
+      position: relative; overflow: hidden;
+    }
+    .stat-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--pink), transparent);
+      transform: scaleX(0); transform-origin: left; transition: transform 0.3s;
+    }
+    .stat-card:hover { border-color: rgba(255,45,120,0.35); transform: translateY(-4px); }
+    .stat-card:hover::before { transform: scaleX(1); }
+    .stat-num { font-family: var(--font-display); font-size: 2.4rem; font-weight: 900; color: var(--pink); line-height: 1; }
+    .stat-label { font-size: 0.82rem; color: var(--muted); margin-top: 0.4rem; }
+
+    /* ─── SKILLS ─── */
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.3rem; margin-top: 3rem; }
+    .skill-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 1.8rem; transition: all 0.25s;
+    }
+    .skill-card:hover { border-color: rgba(255,45,120,0.4); transform: translateY(-4px); box-shadow: 0 16px 48px rgba(255,45,120,0.08); }
+    .skill-icon { font-size: 2rem; margin-bottom: 0.9rem; }
+    .skill-title { font-family: var(--font-display); font-size: 1rem; font-weight: 700; margin-bottom: 1rem; }
+    .skill-pills { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+    .skill-pill {
+      font-family: var(--font-mono); font-size: 0.72rem;
+      padding: 0.28rem 0.75rem; border-radius: 50px;
+      background: rgba(255,45,120,0.1); color: var(--pink-pale);
+      border: 1px solid rgba(255,45,120,0.2);
+    }
+
+    /* ─── CERTIFICATIONS ─── */
+    #certifications { background: var(--surface); }
+    .certs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.2rem; margin-top: 3rem; }
+    .cert-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden; transition: all 0.3s; cursor: pointer;
+    }
+    .cert-card:hover { border-color: rgba(255,45,120,0.5); transform: translateY(-4px); box-shadow: 0 16px 48px rgba(255,45,120,0.12); }
+    .cert-preview-placeholder {
+      width: 100%; aspect-ratio: 4/3;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #180a10, #220e18);
+      border-bottom: 1px solid var(--border); gap: 0.6rem;
+    }
+    .cert-big-icon { font-size: 2.5rem; }
+    .cert-issuer-badge {
+      font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--pink);
+      background: rgba(255,45,120,0.1); border: 1px solid rgba(255,45,120,0.2);
+      padding: 0.2rem 0.7rem; border-radius: 50px;
+    }
+    .cert-preview-img {
+      width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block;
+      border-bottom: 1px solid var(--border);
+    }
+    .cert-body { padding: 1.2rem 1.4rem; display: flex; align-items: flex-start; gap: 0.9rem; }
+    .cert-badge-sm { width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+    .cert-badge-sm.cyber { background: rgba(255,45,120,0.12); }
+    .cert-badge-sm.ai    { background: rgba(0,200,255,0.10); }
+    .cert-badge-sm.net   { background: rgba(80,200,120,0.10); }
+    .cert-name { font-weight: 600; font-size: 0.9rem; }
+    .cert-meta { font-family: var(--font-mono); font-size: 0.73rem; color: var(--muted); margin-top: 0.2rem; }
+    .cert-year { font-family: var(--font-mono); font-size: 0.72rem; color: var(--pink); font-weight: 600; margin-left: auto; white-space: nowrap; }
+
+    /* Modal */
+    .cert-modal {
+      display: none; position: fixed; inset: 0; z-index: 2000;
+      background: rgba(0,0,0,0.92); backdrop-filter: blur(12px);
+      align-items: center; justify-content: center; padding: 2rem;
+    }
+    .cert-modal.open { display: flex; }
+    .cert-modal-inner { max-width: 700px; width: 100%; position: relative; }
+    .cert-modal-img { width: 100%; border-radius: 12px; box-shadow: 0 40px 100px rgba(0,0,0,0.8); }
+    .cert-modal-close {
+      position: absolute; top: -14px; right: -14px;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--pink); color: var(--black);
+      border: none; font-size: 1.1rem; font-weight: 700;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ─── EXPERIENCE ─── */
+    .timeline { margin-top: 3rem; position: relative; padding-left: 2rem; }
+    .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: linear-gradient(to bottom, var(--pink), transparent); }
+    .timeline-item { position: relative; margin-bottom: 2.5rem; }
+    .timeline-dot { position: absolute; left: -2.42rem; top: 6px; width: 16px; height: 16px; border-radius: 50%; background: var(--pink); border: 3px solid var(--black); box-shadow: 0 0 0 1px var(--pink), 0 0 16px var(--pink-glow); }
+    .exp-header { display: flex; align-items: center; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 0.5rem; }
+    .exp-role { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; }
+    .exp-company { font-family: var(--font-mono); font-size: 0.78rem; color: var(--pink); background: rgba(255,45,120,0.1); padding: 0.2rem 0.75rem; border-radius: 50px; }
+    .exp-date { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); margin-left: auto; }
+    .exp-text { color: var(--muted); }
+    .exp-bullets { margin-top: 0.8rem; padding-left: 1.2rem; }
+    .exp-bullets li { color: var(--muted); margin-bottom: 0.35rem; font-size: 0.9rem; }
+    .exp-bullets li::marker { color: var(--pink); }
+
+    /* ─── PROJECTS ─── */
+    #projects { background: var(--surface); }
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+    .project-card { background: var(--card); border: 1px solid var(--border); border-radius: 18px; overflow: hidden; transition: all 0.3s; }
+    .project-card:hover { border-color: rgba(255,45,120,0.5); transform: translateY(-6px); box-shadow: 0 24px 70px rgba(255,45,120,0.12); }
+    .project-banner { height: 130px; display: flex; align-items: center; justify-content: center; font-size: 3rem; position: relative; overflow: hidden; }
+    .banner-ai   { background: linear-gradient(135deg, #0d0a12, #1a0a18); }
+    .banner-sec  { background: linear-gradient(135deg, #120008, #200012); }
+    .banner-web  { background: linear-gradient(135deg, #0a0810, #140d1e); }
+    .project-banner::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 50% 60%, rgba(255,45,120,0.2), transparent 70%); }
+    .project-banner span { position: relative; z-index: 1; }
+    .project-body { padding: 1.5rem; }
+    .project-title { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; margin-bottom: 0.6rem; }
+    .project-desc { color: var(--muted); font-size: 0.87rem; margin-bottom: 1.2rem; line-height: 1.7; }
+    .project-stack { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
+    .stack-tag { font-family: var(--font-mono); font-size: 0.7rem; padding: 0.2rem 0.65rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 50px; color: var(--muted); }
+    .project-links { display: flex; gap: 1rem; }
+    .project-link { font-family: var(--font-mono); font-size: 0.78rem; color: var(--pink); text-decoration: none; display: flex; align-items: center; gap: 0.3rem; transition: opacity 0.2s; }
+    .project-link:hover { opacity: 0.65; }
+
+    /* ─── ACHIEVEMENTS ─── */
+    .ach-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.2rem; margin-top: 3rem; }
+    .ach-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem; display: flex; gap: 1rem; align-items: flex-start; transition: all 0.25s; }
+    .ach-card:hover { border-color: rgba(255,200,50,0.3); transform: translateY(-3px); }
+    .ach-icon { font-size: 1.6rem; flex-shrink: 0; }
+    .ach-title { font-weight: 600; font-size: 0.93rem; }
+    .ach-sub { font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem; }
+
+    /* ─── WHY ME ─── */
+    #why { background: var(--surface); }
+    .why-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 1.3rem; margin-top: 3rem; }
+    .why-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; position: relative; overflow: hidden; transition: all 0.3s; }
+    .why-card:hover { border-color: rgba(255,45,120,0.4); transform: translateY(-4px); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+    .why-num { font-family: var(--font-display); font-size: 4rem; font-weight: 900; color: rgba(255,45,120,0.07); line-height: 1; margin-bottom: 0.5rem; }
+    .why-title { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; margin-bottom: 0.6rem; }
+    .why-desc { color: var(--muted); font-size: 0.88rem; line-height: 1.7; }
+
+    /* ─── CONTACT ─── */
+    #contact { text-align: center; }
+    .contact-inner { max-width: 600px; margin: 0 auto; }
+    .contact-form { margin-top: 2.5rem; text-align: left; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label { display: block; font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); margin-bottom: 0.4rem; letter-spacing: 0.07em; text-transform: uppercase; }
+    .form-group input, .form-group textarea { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 0.85rem 1rem; color: var(--white); font-family: var(--font-body); font-size: 0.93rem; outline: none; transition: border-color 0.2s; }
+    .form-group input:focus, .form-group textarea:focus { border-color: var(--pink); }
+    .form-group textarea { resize: vertical; min-height: 110px; }
+    .contact-extras { display: flex; justify-content: center; gap: 1.2rem; margin-top: 2.5rem; flex-wrap: wrap; }
+    .contact-link { display: flex; align-items: center; gap: 0.5rem; color: var(--muted); text-decoration: none; padding: 0.65rem 1.3rem; border: 1px solid var(--border); border-radius: 50px; font-family: var(--font-mono); font-size: 0.8rem; transition: all 0.25s; }
+    .contact-link:hover { border-color: var(--pink); color: var(--pink); }
+
+    /* ─── FOOTER ─── */
+    footer { text-align: center; padding: 2rem 6%; border-top: 1px solid var(--border); font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); }
+    footer span { color: var(--pink); }
+
+    /* ─── REVEAL ─── */
+    .reveal { opacity: 0; transform: translateY(36px); transition: opacity 0.75s ease, transform 0.75s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 4%; }
+      .nav-links { display: none; }
+      section { padding: 4rem 4%; }
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .form-row { grid-template-columns: 1fr; }
+      body { cursor: auto; }
+      .cursor, .cursor-ring { display: none; }
+    }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--white); transition: all 0.3s; }
+    @media (max-width: 768px) { .hamburger { display: flex; } }
+.campus-section { padding: 80px 0; }
+.container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+.section-tag { 
+  color: var(--accent, #a11272); 
+  font-size: 0.85rem; 
+  font-weight: 600; 
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+.section-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 12px; }
+.section-title .accent { background: linear-gradient(90deg, #ff2d78, #ff2d78); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.section-subtitle { color: var(--text-secondary, #9CA3AF); font-size: 1.1rem; margin-bottom: 40px; }
+
+.campus-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+/* THE DIV CARD */
+.campus-card {
+  background: #ff2d78;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 28px;
+  transition: transform 0.3s, border 0.3s;
+}
+.campus-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--accent, #ff2d78);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.card-icon { font-size: 2rem; }
+.card-badge {
+  background:#ff2d78;
+  border: 1px solid var(--accent, #ff2d78);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+}
+
+.campus-card h3 { font-size: 1.4rem; margin-bottom: 6px; }
+.card-role { color: var(--text-secondary, #9CA3AF); font-size: 0.9rem; margin-bottom: 20px; }
+
+.card-section h4 {
+  font-size: 0.9rem;
+  color: var(--text-secondary, #9CA3AF);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.card-section ul { list-style: none; padding-left: 0; }
+.card-section li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+.card-section li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--accent, #ff2d78);
+  font-weight: bold;
+}
+
+.card-section.award li::before { content: "🏆"; }
+
+.cert-buttons { display: flex; gap: 10px; margin-top: 16px; }
+.cert-btn {
+  background: linear-gradient(90deg, #ff2d78, #ff2d78);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.cert-preview {
+  display: none;
+  margin-top: 16px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.cert-preview iframe { width: 100%; height: 400px; border: none; }
+.cert-preview.active { display: block; }
+
+  </style>
+</head>
+<body>
+
+<!-- CUSTOM CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- CERT MODAL -->
+<div class="cert-modal" id="certModal" onclick="closeCertModal(event)">
+  <div class="cert-modal-inner">
+    <button class="cert-modal-close" onclick="document.getElementById('certModal').classList.remove('open')">✕</button>
+    <img class="cert-modal-img" id="certModalImg" src="" alt="Certificate" />
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Oniyide Oluwatobiloba ✦</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#certifications">Certs</a></li>
+    <li><a href="#campus">Campus Involvement</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#why">Why Me</a></li>
+    <li><a href="#contact" class="nav-cta">Let's Talk</a></li>
+  </ul>
+  <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+  <p class="hero-eyebrow">Software Engineer <span>✦</span> AI & Cybersecurity <span>✦</span> Babcock University</p>
+  <h1 class="hero-h1">
+    Building the<br/>
+    <span class="stroke">Future</span> <span class="pink">with</span><br/>
+    Code &amp; Intelligence
+  </h1>
+  <p class="hero-desc">I'm <strong>Oluwatobiloba Oniyide</strong> — a Software Engineering student obsessed with AI, cybersecurity, and the kind of tech that actually changes things. I don't just learn tools. I wield them.</p>
+  <div class="hero-actions">
+    <a href="#projects" class="btn btn-pink">See My Work →</a>
+    <a href="Oniyide_Oluwatobiloba_Software Engineering.pdf" class="btn btn-ghost" download="Oniyide_Oluwatobiloba_Software Engineering.pdf">View My CV ↓</a>
+  </div>
+  <div class="hero-tags">
+    <span class="tag">🤖 RAG Agents & LLMs</span>
+    <span class="tag">🔐 Cyber Threat Management</span>
+    <span class="tag">☁️ Cloud & Networking</span>
+    <span class="tag">🔍 Digital Forensics</span>
+    <span class="tag">💡 Emotional Intelligence</span>
+  </div>
+  <div class="scroll-cue"><span>Scroll</span><div class="scroll-line"></div></div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <p class="sec-label reveal">/ About</p>
+  <h2 class="sec-title reveal">Not just a student.<br/>A builder in progress.</h2>
+  <div class="about-grid">
+    <div class="about-story reveal">
+      <p>My engineering journey started with a simple question: <strong>how does software shape the world around us?</strong> That curiosity became a commitment — to Babcock University's Software Engineering programme, to stacking certifications in Cybersecurity and AI, and to building skills that actually matter.</p>
+      <p>What sets me apart isn't just technical knowledge — it's the combination of <strong>analytical rigour</strong>, a certified diploma in <strong>Emotional Intelligence</strong>, and hands-on customer experience. I understand both the system and the human using it.</p>
+      <p>Whether it's defending against cyber threats, designing RAG agents, or making a product delightful for end users, I bring <strong>drive, adaptability, and a merit-based mindset</strong> to every challenge.</p>
+    </div>
+    <div class="about-stats reveal">
+      <div class="stat-card"><div class="stat-num">10+</div><div class="stat-label">Certifications earned</div></div>
+      <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">Specialisation tracks</div></div>
+      <div class="stat-card"><div class="stat-num">2026</div><div class="stat-label">NVIDIA AI cert</div></div>
+      <div class="stat-card"><div class="stat-num">∞</div><div class="stat-label">Curiosity & drive</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <p class="sec-label reveal">/ Capabilities</p>
+  <h2 class="sec-title reveal">What I bring to the table</h2>
+  <p class="sec-sub reveal">A multi-disciplinary toolkit forged from curiosity, hustle, and a lot of late nights.</p>
+  <div class="skills-grid">
+    <div class="skill-card reveal">
+      <div class="skill-icon">🤖</div><div class="skill-title">AI & Machine Learning</div>
+      <div class="skill-pills"><span class="skill-pill">RAG Agents</span><span class="skill-pill">LLMs</span><span class="skill-pill">NVIDIA NIM</span><span class="skill-pill">ML Concepts</span><span class="skill-pill">Vector DBs</span></div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">🔐</div><div class="skill-title">Cybersecurity</div>
+      <div class="skill-pills"><span class="skill-pill">Ethical Hacking</span><span class="skill-pill">Cyber Forensics</span><span class="skill-pill">Endpoint Security</span><span class="skill-pill">Threat Mgmt</span><span class="skill-pill">Cybercrime Analysis</span></div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">☁️</div><div class="skill-title">Cloud & Networking</div>
+      <div class="skill-pills"><span class="skill-pill">Cloud Computing</span><span class="skill-pill">Network Defense</span><span class="skill-pill">Cisco Networking</span><span class="skill-pill">IPv4/IPv6</span></div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">🛠️</div><div class="skill-title">Software Engineering</div>
+      <div class="skill-pills"><span class="skill-pill">Programming Fundamentals</span><span class="skill-pill">Dev Methodologies</span><span class="skill-pill">Clean Code</span><span class="skill-pill">Problem Solving</span></div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">🤝</div><div class="skill-title">Human Skills</div>
+      <div class="skill-pills"><span class="skill-pill">Emotional Intelligence</span><span class="skill-pill">Communication</span><span class="skill-pill">Teamwork</span><span class="skill-pill">Critical Thinking</span><span class="skill-pill">Time Management</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <p class="sec-label reveal">/ Credentials</p>
+  <h2 class="sec-title reveal">Certified. Validated. Ready.</h2>
+  <p class="sec-sub reveal">Every one of these was self-initiated — no one told me to. Click any card to see the full certificate.</p>
+  <div class="certs-grid">
+
+   <!--Networking Basics -->
+    <div class="cert-card reveal" onclick="openCertImg('Cyber_Forensic_Certificate_-_Oniyide_Oluwatobiloba_Oghenetega.jpg')">
+      <img class="cert-preview-img" src="./Networking Basics.png" alt="Networking Basics Certificate" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+      <div class="cert-preview-placeholder" style="display:none;"><div class="cert-big-icon">🌐</div><div style="font-family:var(--font-mono);font-size:0.82rem;color:var(--muted);text-align:center;padding:0 1rem;">Networking Basics</div><div class="cert-issuer-badge">Cisco Networking Academy</div><div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--muted);">Oct 2023</div></div>
+      <div class="cert-body"><div class="cert-badge-sm cyber">🌐</div><div><div class="cert-name">Networking Basics</div><div class="cert-meta">Cisco Networking Academy · Oct 2023</div></div></div>
+    </div>
+
+    
+     <!-- Networking Devices-->
+    <div class="cert-card reveal" onclick="openCertImg('Cyber_Forensic_Certificate_-_Oniyide_Oluwatobiloba_Oghenetega.jpg')">
+      <img class="cert-preview-img" src="./networking devics.png" alt="Networking Devices Certificate" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+      <div class="cert-preview-placeholder" style="display:none;"><div class="cert-big-icon">⚙️</div><div style="font-family:var(--font-mono);font-size:0.82rem;color:var(--muted);text-align:center;padding:0 1rem;">Networking Devices & Config</div><div class="cert-issuer-badge">Cisco Networking Academy</div><div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--muted);">Oct 2023</div></div>
+      <div class="cert-body"><div class="cert-badge-sm cyber">⚙️</div><div><div class="cert-name">Networking Devices</div><div class="cert-meta">Cisco Networking Academy · Oct 2023</div></div></div>
+    </div>
+
+
+  
+     <!-- Intro to CyberSecurity -->
+    <div class="cert-card reveal" onclick="openCertImg('Cyber_Forensic_Certificate_-_Oniyide_Oluwatobiloba_Oghenetega.jpg')">
+      <img class="cert-preview-img" src="./intro to cybersecurity.png" alt="Intro to CyberSecurity Certificate" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+      <div class="cert-preview-placeholder" style="display:none;"><div class="cert-big-icon">🔑</div><div style="font-family:var(--font-mono);font-size:0.82rem;color:var(--muted);text-align:center;padding:0 1rem;">Endpoint Security</div><div class="cert-issuer-badge">Cisco Networking Academy</div><div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--muted);">Nov 2023</div></div>
+      <div class="cert-body"><div class="cert-badge-sm cyber">🔑</div><div><div class="cert-name">Introduction to Cybersecurity</div><div class="cert-meta">Cisco Networking Academy · Oct 2023</div></div></div>
+    </div>
+
+
+    
+   <!-- Endpoint Security -->
+    <div class="cert-card reveal" onclick="openCertImg('Cyber_Forensic_Certificate_-_Oniyide_Oluwatobiloba_Oghenetega.jpg')">
+      <img class="cert-preview-img" src="./Endpoint Security.png" alt="Endpoint Security Certificate" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+      <div class="cert-preview-placeholder" style="display:none;"><div class="cert-big-icon">🛡️</div><div style="font-family:var(--font-mono);font-size:0.82rem;color:var(--muted);text-align:center;padding:0 1rem;">Endpoint Security</div><div class="cert-issuer-badge">Cisco Networking Academy</div><div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--muted);">Nov 2023</div></div>
+      <div class="cert-body"><div class="cert-badge-sm cyber">🛡️</div><div><div class="cert-name">Endpoint Security</div><div class="cert-meta">Cisco Networking Academy · Nov 2023</div></div></div>
+    </div>
+
+    <!--Network Defense-->
+    <div class="cert-card reveal" onclick="openCertImg('Cyber_Forensic_Certificate_-_Oniyide_Oluwatobiloba_Oghenetega.jpg')">
+      <img class="cert-preview-img" src="./netdefense.png" alt="Network Defense Certificate" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+      <div class="cert-preview-placeholder" style="display:none;"><div class="cert-big-icon">🔒</div><div style="font-family:var(--font-mono);font-size:0.82rem;color:var(--muted);text-align:center;padding:0 1rem;">Networking Defense</div><div class="cert-issuer-badge">Great Learning Academy</div><div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--muted);">Nov 2023</div></div>
+      <div class="cert-body"><div class="cert-badge-sm cyber">🔒</div><div><div class="cert-name">Network Defense</div><div class="cert-meta">Cisco Networking Academy · Nov 2023</div></div></div>
+    </div>
+
+     <!-- Cyber Threat— has image from upload -->
+    <div class="cert-card reveal" onclick="openCertImg('Cyber_Forensic_Certificate_-_Oniyide_Oluwatobiloba_Oghenetega.jpg')">
+      <img class="cert-preview-img" src="./cybermanagement.png" alt="Cyber Threat Management Certificate" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+      <div class="cert-preview-placeholder" style="display:none;"><div class="cert-big-icon">⚠️</div><div style="font-family:var(--font-mono);font-size:0.82rem;color:var(--muted);text-align:center;padding:0 1rem;">Cyber Forensics</div><div class="cert-issuer-badge">Great Learning Academy</div><div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--muted);">June 2024</div></div>
+      <div class="cert-body"><div class="cert-badge-sm cyber">⚠️</div><div><div class="cert-name">Cyber Threat Management</div><div class="cert-meta">Cisco Networking Academy · Nov 2023</div></div></div>
+    </div>
+
+
+    <!-- Cyber Forensics — has image from upload -->
+    <div class="cert-card reveal" onclick="openCertImg('Cyber_Forensic_Certificate_-_Oniyide_Oluwatobiloba_Oghenetega.jpg')">
+      <img class="cert-preview-img" src="./Cyber Forensic Certificate - Oniyide Oluwatobiloba Oghenetega.jpg" alt="Cyber Forensics Certificate" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+      <div class="cert-preview-placeholder" style="display:none;"><div class="cert-big-icon">🔍</div><div style="font-family:var(--font-mono);font-size:0.82rem;color:var(--muted);text-align:center;padding:0 1rem;">Cyber Forensics</div><div class="cert-issuer-badge">Great Learning Academy</div><div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--muted);">June 2024</div></div>
+      <div class="cert-body"><div class="cert-badge-sm cyber">🔍</div><div><div class="cert-name">Cyber Forensics</div><div class="cert-meta">Great Learning Academy · June 2024</div></div></div>
+    </div>
+     <!--Introduction to Cybercrimme-->
+    <div class="cert-card reveal" onclick="openCertImg('Cyber_Forensic_Certificate_-_Oniyide_Oluwatobiloba_Oghenetega.jpg')">
+      <img class="cert-preview-img" src="./intro to Cybercrime.png" alt="Intro to CyerCrime Certificate" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+      <div class="cert-preview-placeholder" style="display:none;"><div class="cert-big-icon">🎯</div><div style="font-family:var(--font-mono);font-size:0.82rem;color:var(--muted);text-align:center;padding:0 1rem;">Introduction to Cybercrime</div><div class="cert-issuer-badge">Simplilearn</div><div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--muted);">June 2024</div></div>
+
+      <div class="cert-body"><div class="cert-badge-sm cyber">🎯</div><div><div class="cert-name">Introduction to Cybercrime</div><div class="cert-meta">Simplilearn · June 2024</div></div></div>
+    </div>
+
+    
+
+     <!--Ethical Hacking-->
+    <div class="cert-card reveal" onclick="openCertImg('Cyber_Forensic_Certificate_-_Oniyide_Oluwatobiloba_Oghenetega.jpg')">
+      <img class="cert-preview-img" src="./EH101.png" alt="EthicalHacking 101 Certificate" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+      <div class="cert-preview-placeholder" style="display:none;"><div class="cert-big-icon">🎯</div><div style="font-family:var(--font-mono);font-size:0.82rem;color:var(--muted);text-align:center;padding:0 1rem;">Ethical Hacking</div><div class="cert-issuer-badge">Simplilearn</div><div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--muted);">July 2024</div></div>
+
+      <div class="cert-body"><div class="cert-badge-sm cyber">🎯</div><div><div class="cert-name">Ethical Hacking 101</div><div class="cert-meta">Simplilearn · July 2024</div></div></div>
+    </div>
+   
+
+    <!-- NVIDIA cert -->
+    <div class="cert-card reveal" onclick="openCertImg(this, 'Building RAG Agents with LLMs', 'NVIDIA Deep Learning Institute', 'Jan 2026')" style="border-color: rgba(100,220,255,0.2);">
+      
+      <div class="cert-preview-placeholder" style="background: linear-gradient(135deg, #0a1018, #0d1a22);">
+        <img class="cert-preview-img" src="./NVIDIA.png" alt="NVIDIACertificate" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              </div>
+
+      <div class="cert-body">
+        <div class="cert-badge-sm ai">🤖</div>
+        <div><div class="cert-name">Building RAG Agents with LLMs</div><div class="cert-meta" style="color:#76e4ff;">NVIDIA Deep Learning Institute · Jan 2026</div></div>
+        <div class="cert-year" style="color:#76e4ff;">2026</div>
+      </div>
+    </div>
+
+  </div>
+  </section>
+  <!-- CAMPUS INVOLVEMENT SECTION -->
+<section id="campus" class="campus-section">
+  <div class="container">
+    <p class="section-tag">CAMPUS + COMMUNITY</p>
+    <h2 class="section-title">Campus <span class="accent">Involvement</span></h2>
+    <p class="section-subtitle">Building beyond code. Leading and creating impact from secondary school to university.</p>
+
+    <div class="campus-grid">
+      
+      <!-- CARD 1: PRIME GATE -->
+      <div class="campus-card">
+        <div class="card-header">
+          <div class="card-icon">🎓</div>
+          <span class="card-badge">📜 Pioneer Role</span>
+        </div>
+        <h3>First Social Prefect</h3>
+        <p class="card-role">Primegate Montessori High School | Sept2021 – Jul 2022</p>
+        
+        <div class="card-section">
+          <h4>Roles & Responsibilities</h4>
+          <ul>
+            <li>Appointed as inaugural First Social Prefect in SS3, overseeing all student social events and welfare initiatives</li>
+            <li>Championed student voice by gathering feedback and ensuring student input shaped all event planning</li>
+            <li>Planned and executed 10+ school events, assemblies, and programs for 200+ students</li>
+            <li>Served as liaison between student body and administration to improve school culture</li>
+          </ul>
+        </div>
+
+        <div class="card-section award">
+          <h4>Awards & Recognition</h4>
+          <ul>
+            <li>🏆 <strong>Best Behaved Student</strong> - Set of 2022. First award of its kind in 4 years</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- CARD 2: BUCC -->
+      <div class="campus-card">
+        <div class="card-header">
+          <div class="card-icon">💻</div>
+          <span class="card-badge">📜  Certificate</span>
+        </div>
+        <h3>Social Committee Member</h3>
+        <p class="card-role">Babcock University Computer Club BUCC | Oct 2025 – May 2026</p>
+        
+        <div class="card-section">
+          <h4>Roles & Responsibilities</h4>
+          <ul>
+            <li>Planned and coordinated 5+ tech-focused community events with 1000+ student reach</li>
+            <li>Drove student engagement through outreach, boosting club participation by 40%</li>
+            <li>Managed event logistics and team coordination for seamless delivery</li>
+          </ul>
+        </div>
+
+        <div class="cert-buttons">
+          <button onclick="toggleCert('cert1')" class="cert-btn">🏆 Service Award 2026</button>
+        </div>
+        <div id="cert1" class="cert-preview"><iframe src="./Oniyide_Oluwatobiloba_Oghenetega_BUCC_Print.png"></iframe></div>
+        
+      </div>
+
+      <!-- CARD 3: COWRYWISE -->
+      <div class="campus-card">
+        <div class="card-header">
+          <div class="card-icon">📈</div>
+          <span class="card-badge">📜 Brand Ambassador</span>
+        </div>
+        <h3>Campus Ambassador</h3>
+        <p class="card-role">Cowrywise | [February 2026- Date]</p>
+        
+        <div class="card-section">
+          <h4>Roles & Responsibilities</h4>
+          <ul>
+            <li>Represented Cowrywise to drive financial literacy and investment awareness on campus</li>
+            <li>Executed 4+ campus activations and workshops for 300+ students</li>
+            <li>Onboarded 100+ new users to the Cowrywise platform</li>
+            <li>Collaborated with marketing team to improve product adoption</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+function toggleCert(id) {
+  const cert = document.getElementById(id);
+  cert.classList.toggle('active');
+  document.querySelectorAll('.cert-preview').forEach(el => {
+    if(el.id !== id) el.classList.remove('active');
+  });
+}
+</script>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <p class="section-label reveal">Projects</p>
+  <h2 class="section-title reveal">Built to solve. Designed to impress.</h2>
+  <p class="section-sub reveal">Hands-on projects that apply theoretical knowledge to real-world problems across AI, security, and web development.</p>
+  <div class="projects-grid">
+    <div class="project-card reveal">
+      <div class="project-banner banner-ai"><span>🤖</span></div>
+      <div class="project-body">
+        <div class="project-title">Corporate Solutions Company</div>
+        <div class="project-desc">A Frontend Webpage specially designed for a consulting firm. It uses HTML,CSS and Java Scrpit.Designed and built showcase the company's ratings, projects to prospective clients.</div>
+        <div class="project-stack">
+          <span class="stack-tag">HTML</span>
+          <span class="stack-tag">CSS</span>
+          <span class="stack-tag">JavaScript</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/Tobiloba-Oniyide" class="project-link">⬡ GitHub</a>
+          <a href="https://tobiloba-oniyide.github.io/CorporateSolutions/" class="project-link">↗ Live Demo</a>
+        </div>
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-banner banner-web"><span>💼</span></div>
+      <div class="project-body">
+        <div class="project-title"> OCTAHIRE</div>
+        <div class="project-desc">With that vision in mind, we propose the design, development, deployment, and long-term support of a Campus Recruitment System (CRS) named OCTAHIRE— a secure, scalable, and intuitive platform that reimagines how placements are managed across campuses.</div>
+        <div class="project-stack">
+          <span class="stack-tag">HTML</span>
+          <span class="stack-tag">Js</span>
+          <span class="stack-tag">CSS</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/Tobiloba-Oniyide" class="project-link">⬡ GitHub</a>
+          <a href="https://tobiloba-oniyide.github.io/OCTAHIRE/" class="project-link">↗ Live Demo</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ACHIEVEMENTS -->
+<section id="achievements">
+  <p class="sec-label reveal">/ Recognition</p>
+  <h2 class="sec-title reveal">A track record that speaks.</h2>
+  <div class="ach-grid">
+    <div class="ach-card reveal"><div class="ach-icon">🏆</div><div><div class="ach-title">Best Behaved Student</div><div class="ach-sub">Primegate High School · Integrity and leadership by example · 2022</div></div></div>
+    <div class="ach-card reveal"><div class="ach-icon">🎙️</div><div><div class="ach-title">Debate Competition Participant</div><div class="ach-sub">Babcock University · Critical thinking and composure under pressure · 2025</div></div></div>
+    <div class="ach-card reveal"><div class="ach-icon">🥈</div><div><div class="ach-title">2nd Place — Interhouse Sports</div><div class="ach-sub">Kharece Interhouse Competition · Teamwork and competitive spirit · 2011</div></div></div>
+    <div class="ach-card reveal"><div class="ach-icon">📜</div><div><div class="ach-title">Diploma in Emotional Intelligence</div><div class="ach-sub">OGE Business School · A rare credential that elevates every collaboration · 2024</div></div></div>
+  </div>
+</section>
+
+<!-- WHY ME -->
+<section id="why">
+  <p class="sec-label reveal">/ Why Me</p>
+  <h2 class="sec-title reveal">Why Oluwatobiloba?</h2>
+  <p class="sec-sub reveal">The honest, confident case. No fluff, just substance.</p>
+  <div class="why-grid">
+    <div class="why-card reveal"><div class="why-num">01</div><div class="why-title">T-Shaped Knowledge</div><div class="why-desc">Deep in Cybersecurity + AI, broad in Cloud, Networking, and Software Dev. Verified by 10+ industry certifications.</div></div>
+    <div class="why-card reveal"><div class="why-num">02</div><div class="why-title">EI + Engineering — Rare Combo</div><div class="why-desc">Most engineers are great with systems. A certified EI diploma means she's also great with people — and understands users deeply.</div></div>
+    <div class="why-card reveal"><div class="why-num">03</div><div class="why-title">Real-World Experience</div><div class="why-desc">Working at Telso Global while studying builds a product mindset. Software serves real humans — she never forgets that.</div></div>
+    <div class="why-card reveal"><div class="why-num">04</div><div class="why-title">Self-Directed Learner</div><div class="why-desc">From Cisco to NVIDIA, every cert was self-initiated. That intrinsic drive to learn before being told is what fast teams need.</div></div>
+    <div class="why-card reveal"><div class="why-num">05</div><div class="why-title">AI × Cyber Intersection</div><div class="why-desc">One of the most in-demand skill combos in tech — and she's been building it systematically, not chasing trends.</div></div>
+    <div class="why-card reveal"><div class="why-num">06</div><div class="why-title">Proven Under Pressure</div><div class="why-desc">Debating, competing in sports, balancing a job with a degree. Resilience and performance when it counts — every time.</div></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <p class="sec-label reveal">/ Contact</p>
+    <h2 class="sec-title reveal">Let's build something great.</h2>
+    <div class="contact-extras reveal">
+      <a href="mailto:Oniyidetobiloba7@gmail.com" class="contact-link">✉ Email Me</a>
+      <a href="tel:07080088794" class="contact-link">📞 07080088794</a>
+      <a href="tel:09067714578" class="contact-link">📞 09067714578</a>
+      <a href="https://www.linkedin.com/in/oluwatobiloba-oniyide-60327037a?utm_source=share_via&utm_content=profile&utm_medium=member_android" class="contact-link">LinkedIn</a>
+      <a href="https://github.com/Tobiloba-Oniyide" class="contact-link">⬡ GitHub</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 <span>Oluwatobiloba Oniyide</span> ✦ Designed with intention, built for impact.</p>
+</footer>
+
+<script>
+  // ─── Custom cursor ───
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx+'px'; cursor.style.top = my+'px';
+  });
+  (function animRing() {
+    rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+    ring.style.left = rx+'px'; ring.style.top = ry+'px';
+    requestAnimationFrame(animRing);
+  })();
+  document.querySelectorAll('a, button, .cert-card, .stat-card, .skill-card, .project-card').forEach(el => {
+    el.addEventListener('mouseenter', () => { cursor.style.transform='translate(-50%,-50%) scale(2.2)'; cursor.style.background='#ff6ea8'; });
+    el.addEventListener('mouseleave', () => { cursor.style.transform='translate(-50%,-50%) scale(1)'; cursor.style.background='var(--pink)'; });
+  });
+
+  // ─── Scroll reveal ───
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 70); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // ─── Mobile menu ───
+  function toggleMenu() {
+    const links = document.querySelector('.nav-links');
+    links.style.cssText = links.style.display === 'flex' ? '' :
+      'display:flex;flex-direction:column;position:fixed;top:64px;left:0;right:0;background:rgba(10,6,8,0.98);padding:2rem;gap:1.5rem;border-bottom:1px solid rgba(255,45,120,0.1);z-index:99;';
+  }
+
+  // ─── Nav highlight ───
+  const sections = document.querySelectorAll('section');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 200) cur = s.id; });
+    navLinks.forEach(a => { a.style.color = a.getAttribute('href') === '#'+cur ? 'var(--pink)' : ''; });
+  });
+
+  // ─── Form ───
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target;
+    btn.textContent = "✓ Sent! I'll be in touch ✦";
+    btn.style.background = '#c0004a';
+    setTimeout(() => { btn.textContent = 'Send Message →'; btn.style.background=''; }, 3500);
+  }
+
+  // ─── Cert modal ───
+  function openCertImg(src) {
+    document.getElementById('certModalImg').src = src;
+    document.getElementById('certModal').classList.add('open');
+  }
+  function openCertPlaceholder(card, name, issuer, date) {
+    // No image yet — you can swap this for an actual src when images are available
+    alert('Certificate: ' + name + '\nIssuer: ' + issuer + '\nDate: ' + date + '\n\nTo show a full preview, place the certificate image file in the same folder as this HTML and update the src.');
+  }
+  function closeCertModal(e) {
+    if (e.target === document.getElementById('certModal')) document.getElementById('certModal').classList.remove('open');
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') document.getElementById('certModal').classList.remove('open'); });
+</script>
+</body>
+</html>
